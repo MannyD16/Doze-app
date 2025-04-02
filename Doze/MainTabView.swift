@@ -12,26 +12,26 @@ struct MainTabView: View {
         TabView {
             SleepDashboardView()
                 .tabItem {
-                    Image(systemName: "clock.fill")
+                    Image(systemName: "bed.double.fill")
                     Text("History")
                 }
 
-            SleepLogView()
-                .tabItem {
-                    Image(systemName: "plus.circle.fill")
-                    Text("Log Sleep")
-                }
-            
-            SettingsView()
-                .tabItem {
-                    Image(systemName: "gearshape.fill")
-                    Text("Settings")
             TrendsView()
                 .tabItem {
                     Image(systemName: "chart.bar.fill")
                     Text("Trends")
                 }
 
+            SleepLogView()
+                .tabItem {
+                    Image(systemName: "plus.circle.fill")
+                    Text("Log")
+                }
+
+            SettingsView()
+                .tabItem {
+                    Image(systemName: "gearshape.fill")
+                    Text("Settings")
                 }
         }
         .accentColor(.purple)
