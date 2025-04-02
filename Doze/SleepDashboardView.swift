@@ -22,7 +22,7 @@ struct SleepDashboardView: View {
                     ForEach(sessions, id: \.id) { session in
                         sessionCard(for: session)
                             .transition(.move(edge: .bottom).combined(with: .opacity))
-                            .animation(.easeInOut(duration: 0.4), value: sessions)
+                            
                     }
 
                     if sessions.isEmpty {
