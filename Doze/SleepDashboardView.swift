@@ -16,46 +16,49 @@ struct SleepDashboardView: View {
     ) private var sessions: FetchedResults<SleepSession>
 
     var body: some View {
-        NavigationView {
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 16) {
-                    ForEach(sessions, id: \.id) { session in
-                        sessionCard(for: session)
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
-                            
-                    }
+        ZStack {
+            Color.black.ignoresSafeArea()
 
-                    if sessions.isEmpty {
-                        Text("No sleep sessions yet")
-                            .foregroundColor(.gray)
-                            .padding()
-                    }
-                }
-                .padding(.vertical)
-            }
-            .background(Color.black.ignoresSafeArea())
-            .navigationTitle("Sleep History")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+            VStack(spacing: 20) {
+                HStack {
+                    Text("Sleep History")
+                        .font(.largeTitle)
+                        .bold()
+                        .foregroundColor(.white)
+                    Spacer()
                     NavigationLink(destination: SleepLogView()) {
-                        Image(systemName: "plus")
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 28))
                             .foregroundColor(.purple)
                     }
                 }
-            }
-            .onAppear {
-                UIScrollView.appearance().bounces = true
-                UIScrollView.appearance().alwaysBounceVertical = true
+                .padding(.horizontal)
+                .padding(.top, 12)
+
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 16) {
+                        if sessions.isEmpty {
+                            Text("No sleep sessions yet")
+                                .foregroundColor(.gray)
+                                .padding(.top, 40)
+                        } else {
+                            ForEach(sessions, id: \.id) { session in
+                                sessionCard(for: session)
+                            }
+                        }
+                    }
+                    .padding(.vertical)
+                }
             }
         }
     }
 
-    // MARK: - Extracted Subview
     private func sessionCard(for session: SleepSession) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text(formattedDate(session.startTime))
                     .font(.headline)
+                    .foregroundColor(.white)
                 Spacer()
                 Text("\(session.duration / 60, specifier: "%.0f") min")
                     .foregroundColor(.purple)
@@ -70,13 +73,12 @@ struct SleepDashboardView: View {
             }
         }
         .padding()
-        .background(Color(.systemGray6).opacity(0.1))
+        .background(Color.white.opacity(0.05))
         .cornerRadius(12)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.purple.opacity(0.5), lineWidth: 1)
         )
-        .shadow(color: Color.purple.opacity(0.3), radius: 8, x: 0, y: 2)
         .padding(.horizontal)
     }
 
@@ -92,3 +94,4 @@ struct SleepDashboardView: View {
 #Preview {
     SleepDashboardView()
 }
+
