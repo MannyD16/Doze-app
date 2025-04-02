@@ -13,7 +13,7 @@ struct DozeApp: App {
 
     var body: some Scene {
         WindowGroup {
-            SleepLogView()
+            SleepDashboardView()
                 .environment(\.managedObjectContext, persistenceController.context)
         }
     }
