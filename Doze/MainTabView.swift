@@ -22,7 +22,7 @@ struct MainTabView: View {
                     Text("Log Sleep")
                 }
             
-            Text("Settings")
+            SettingsView()
                 .tabItem {
                     Image(systemName: "gearshape.fill")
                     Text("Settings")

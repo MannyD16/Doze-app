@@ -17,7 +17,7 @@ struct SleepDashboardView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 16) {
                     ForEach(sessions, id: \.id) { session in
                         VStack(alignment: .leading, spacing: 10) {
@@ -46,6 +46,8 @@ struct SleepDashboardView: View {
                         )
                         .shadow(color: Color.purple.opacity(0.3), radius: 8, x: 0, y: 2)
                         .padding(.horizontal)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .animation(.easeInOut(duration: 0.4), value: sessions)
                     }
 
                     if sessions.isEmpty {
@@ -66,6 +68,10 @@ struct SleepDashboardView: View {
                     }
                 }
             }
+            .onAppear {
+                UIScrollView.appearance().bounces = true
+                UIScrollView.appearance().alwaysBounceVertical = true
+            }
         }
     }
 
@@ -81,3 +87,4 @@ struct SleepDashboardView: View {
 #Preview {
     SleepDashboardView()
 }
+
