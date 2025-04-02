@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct DozeApp: App {
+    let persistenceController = CoreDataStack.shared
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SleepLogView()
+                .environment(\.managedObjectContext, persistenceController.context)
         }
     }
 }
+
