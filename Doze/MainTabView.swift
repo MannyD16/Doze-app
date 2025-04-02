@@ -26,6 +26,12 @@ struct MainTabView: View {
                 .tabItem {
                     Image(systemName: "gearshape.fill")
                     Text("Settings")
+            TrendsView()
+                .tabItem {
+                    Image(systemName: "chart.bar.fill")
+                    Text("Trends")
+                }
+
                 }
         }
         .accentColor(.purple)
