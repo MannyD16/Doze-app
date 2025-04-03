@@ -15,6 +15,8 @@ struct SleepDashboardView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \SleepSession.startTime, ascending: false)]
     ) private var sessions: FetchedResults<SleepSession>
 
+    @State private var showLogSheet = false
+
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
@@ -26,7 +28,9 @@ struct SleepDashboardView: View {
                         .bold()
                         .foregroundColor(.white)
                     Spacer()
-                    NavigationLink(destination: SleepLogView()) {
+                    Button(action: {
+                        showLogSheet = true
+                    }) {
                         Image(systemName: "plus.circle.fill")
                             .font(.system(size: 28))
                             .foregroundColor(.purple)
@@ -35,21 +39,34 @@ struct SleepDashboardView: View {
                 .padding(.horizontal)
                 .padding(.top, 12)
 
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 16) {
-                        if sessions.isEmpty {
-                            Text("No sleep sessions yet")
-                                .foregroundColor(.gray)
-                                .padding(.top, 40)
-                        } else {
-                            ForEach(sessions, id: \.id) { session in
-                                sessionCard(for: session)
-                            }
+                if sessions.isEmpty {
+                    Spacer()
+                    Text("No sleep sessions yet")
+                        .foregroundColor(.gray)
+                    Spacer()
+                } else {
+                    List {
+                        ForEach(sessions, id: \.id) { session in
+                            sessionCard(for: session)
                         }
+                        .onDelete(perform: deleteSession)
                     }
-                    .padding(.vertical)
+                    .listStyle(.plain)
+                    .background(Color.black)
                 }
             }
+        }
+        .sheet(isPresented: $showLogSheet) {
+            SleepLogView()
+        }
+    }
+
+    private func deleteSession(at offsets: IndexSet) {
+        offsets.map { sessions[$0] }.forEach(context.delete)
+        do {
+            try context.save()
+        } catch {
+            print("Error deleting session: \(error)")
         }
     }
 
@@ -60,7 +77,7 @@ struct SleepDashboardView: View {
                     .font(.headline)
                     .foregroundColor(.white)
                 Spacer()
-                Text("\(session.duration / 60, specifier: "%.0f") min")
+                Text("\(max(0, session.duration / 60), specifier: "%.0f") min")
                     .foregroundColor(.purple)
                     .font(.subheadline)
             }
@@ -79,7 +96,6 @@ struct SleepDashboardView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.purple.opacity(0.5), lineWidth: 1)
         )
-        .padding(.horizontal)
     }
 
     private func formattedDate(_ date: Date?) -> String {
@@ -94,4 +110,5 @@ struct SleepDashboardView: View {
 #Preview {
     SleepDashboardView()
 }
+
 

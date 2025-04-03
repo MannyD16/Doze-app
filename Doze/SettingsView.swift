@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @AppStorage("darkMode") private var darkMode = true
+    @AppStorage("notificationsEnabled") private var notificationsEnabled = false
+
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
@@ -30,10 +33,10 @@ struct SettingsView: View {
                 }
 
                 Section(header: Text("App Settings").foregroundColor(.purple)) {
-                    Toggle(isOn: .constant(true)) {
+                    Toggle(isOn: $darkMode) {
                         Text("Dark Mode").foregroundColor(.white)
                     }
-                    Toggle(isOn: .constant(false)) {
+                    Toggle(isOn: $notificationsEnabled) {
                         Text("Notifications").foregroundColor(.white)
                     }
                 }
@@ -54,4 +57,3 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
 }
-

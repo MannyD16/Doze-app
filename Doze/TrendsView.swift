@@ -13,7 +13,7 @@ struct TrendsView: View {
     @Environment(\.managedObjectContext) private var context
     @FetchRequest(
         entity: SleepSession.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \SleepSession.startTime, ascending: true))
+        sortDescriptors: [NSSortDescriptor(keyPath: \SleepSession.startTime, ascending: true)]
     ) private var sessions: FetchedResults<SleepSession>
 
     var body: some View {

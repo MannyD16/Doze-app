@@ -10,6 +10,7 @@ import SwiftUI
 struct SleepLogView: View {
     @StateObject private var viewModel = SleepSessionViewModel()
     @Environment(\.presentationMode) var presentationMode
+    @State private var showAlert = false
 
     var body: some View {
         ZStack {
@@ -57,8 +58,11 @@ struct SleepLogView: View {
                     .padding(.horizontal)
 
                     Button(action: {
-                        viewModel.saveSleepSession()
-                        presentationMode.wrappedValue.dismiss()
+                        if viewModel.saveSleepSession() {
+                            presentationMode.wrappedValue.dismiss()
+                        } else {
+                            showAlert = true
+                        }
                     }) {
                         Text("Save Sleep Session")
                             .foregroundColor(.black)
@@ -69,6 +73,13 @@ struct SleepLogView: View {
                             .padding(.horizontal)
                     }
                     .padding(.bottom, 20)
+                    .alert(isPresented: $showAlert) {
+                        Alert(
+                            title: Text("Invalid Times"),
+                            message: Text("End time must be after start time."),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    }
                 }
             }
         }

@@ -10,12 +10,15 @@ import SwiftUI
 @main
 struct DozeApp: App {
     let persistenceController = CoreDataStack.shared
+    @AppStorage("darkMode") private var darkMode = true
 
     var body: some Scene {
         WindowGroup {
-            LaunchScreenView()
+            MainTabView()
                 .environment(\.managedObjectContext, persistenceController.context)
+                .preferredColorScheme(darkMode ? .dark : .light)
         }
     }
 }
+
 
