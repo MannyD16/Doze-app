@@ -77,7 +77,7 @@ struct SleepDashboardView: View {
                     .font(.headline)
                     .foregroundColor(.white)
                 Spacer()
-                Text("\(max(0, session.duration / 60), specifier: "%.0f") min")
+                Text(formattedDuration(session.duration))
                     .foregroundColor(.purple)
                     .font(.subheadline)
             }
@@ -104,6 +104,13 @@ struct SleepDashboardView: View {
         formatter.timeStyle = .short
         formatter.dateStyle = .medium
         return formatter.string(from: date)
+    }
+
+    private func formattedDuration(_ duration: Double) -> String {
+        let totalMinutes = Int(duration / 60)
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        return "\(hours) hrs \(minutes) min"
     }
 }
 
